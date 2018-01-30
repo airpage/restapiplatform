@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <!-- META -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id" content="[GOOGLE-CLIENT-ID]">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <title>OPEN API PLATFORM</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  </head>
+  <body>
+  
+  	
+    <div id="fb-root"></div>
+    <div class="container">
+    	<div class="row"><br>
+    	</div>
+      <div class="jumbotron">
+          <h2><STRONG>Get ACCESS TOKEN</STRONG></h2></h5>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+				<div id="logexpmsg">
+				       <h4>가지고 계신 서비스 계정의 버튼을 클릭하여 로그인 하세요.<h4>
+				</div>
+		
+			</div>
+      </div>
+    <form action="?" method="POST">
+      <div class="row">
+        <div class="col-sm-3">
+		<div id="googleLoginButton" class="g-signin2" data-onsuccess="onGoogleSignIn" data-theme="dark"></div><br>
+	</div>
+        <div class="col-sm-3">
+		<div id="fbloginbutton">
+			<!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button> -->
+			<div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();">			
+		</div>
+		</div><br>
+	</div>
+
+        <div class="col-sm-3">
+		<div id="naverIdLogin"></div><br>
+	</div>
+      </div>
+      <div class="row"><br><br></div>
+      <div class="row">
+        <div class="col-sm-6">
+  	 	  <div class="form-group">
+		    <label class="sr-only" for="myemail">E-MAIL</label>
+		    <div class="input-group">
+		      <div class="input-group-addon">E-MAIL ADDRESS</div>
+		      <input type="text" class="form-control" id="myemail" placeholder="E-MAIL" disabled>
+		    </div>
+		  </div>
+  	 	  <div class="form-group">
+		    <label class="sr-only" for="myname">NAME</label>
+		    <div class="input-group">
+		      <div class="input-group-addon">&nbsp;NAME&nbsp;&nbsp;</div>
+		      <input type="text" class="form-control" id="myname" placeholder="NAME" disabled>
+		    </div>
+		  </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+		<div id="expmsg">
+		       <h4>If click "I'm not a robot' below, you can get access token.</h4>
+		</div>
+	</div>
+      </div>
+      	<div class="row">
+        	<div class="col-sm-6">
+	      		<div id="monitor"></div>
+	      		<div id="html_element"></div>
+    	    		<div id="tokenfield"><input type="text" class=form-control id="mytoken"></div>
+		</div>
+      </div>
+    </form>
+      <div class="row">
+        <div class="col-sm-6"><br><br><br>
+		<a href=#privacy target=_new>Privacy</a></FONT>
+	</div>
+      </div>
+    </div>
+	<script>
+		var naverLogin = new naver.LoginWithNaverId(
+			{
+				clientId: "[NAVER CLIENT ID]",
+				callbackUrl: "callback.html",
+				isPopup: false,
+				loginButton: {color: "green", type: 3, height: 35}
+			}
+		);
+
+		/* (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출 */
+		naverLogin.init();
+
+		/* (5) 현재 로그인 상태를 확인 */
+		window.addEventListener('load', function () {
+			naverLogin.getLoginStatus(function (status) {
+				if (status) {
+					/* (6) 로그인 상태가 "true" 인 경우 로그인 버튼을 없애고 사용자 정보를 출력합니다. */
+					setLoginStatus();
+				}
+			});
+		});
+
+
+	window.fbAsyncInit = function() {
+	    FB.init({
+	      appId            : '[FACEBOOK APP ID]',
+	      autoLogAppEvents : true,
+	      xfbml            : true,
+	      version          : 'v2.11'
+	    });
+	  };
+	   
+	(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.11&appId=[FACEBOOK APP ID]&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
+	function statusChangeCallback(response) {
+    		// The response object is returned with a status field that lets the
+    		// app know the current login status of the person.
+    		// Full docs on the response object can be found in the documentation
+    		// for FB.getLoginStatus().
+    		if (response.status === 'connected') {
+      		// Logged into your app and Facebook.
+			facebookSignInCallback();
+    		} else {					
+      		// The person is not logged into your app or we are unable to tell.
+  		}
+	}
+
+	function checkLoginState() {
+   		 FB.getLoginStatus(function(response) {
+      			statusChangeCallback(response);
+    		});
+  	}
+
+	function facebookSignInCallback() {
+    		FB.api('/me', {fields: 'email,name'}, function(response) {
+			$("#fbloginbutton").html('| Facebook에 로그인이 된 상태입니다');
+			$("#myname").val(response.name);
+			$("#myemail").val(response.email);
+			$('#expmsg').show();
+			$('#logexpmsg').hide();
+			$('#html_element').show();
+ 	 	});
+	}
+	
+	function onGoogleSignIn(googleUser) {
+        	// Useful data for your client-side scripts:
+        	var profile = googleUser.getBasicProfile();
+		$("#googleLoginButton").html('| Google에 로그인이 된 상태입니다');
+		$("#myname").val(profile.getName());
+		$("#myemail").val(profile.getEmail());
+		$('#expmsg').show();
+		$('#logexpmsg').hide();
+		$('#html_element').show();
+        };
+
+	function setLoginStatus() {
+		var nickName = naverLogin.user.getNickName();
+		var email = naverLogin.user.getEmail();
+		$("#naverIdLogin").html('| Naver에 로그인이 된 상태입니다');
+		$("#myname").val(nickName);
+		$("#myemail").val(email);
+		$('#expmsg').show();
+		$('#logexpmsg').hide();
+		$('#html_element').show();
+	}
+
+	var onloadCallback = function() {
+ 		 grecaptcha.render('html_element', {
+   		 'sitekey' : 'GOOGLE RECAPTCHA SITEKEY]',
+   		 'callback' : verifyCallback,
+  		});
+	};
+
+	var verifyCallback = function(response) {
+  		sendData(response);
+	};
+
+	function sendData(responsedata) {
+  		var myemail = $('#myemail').val();
+  		var myname = $('#myname').val();
+ 
+		 $.ajax({
+		       type:"POST",
+ 		       url:"[API URL FOR CHECKING CAPTCHA IS VALID OR NOT]",
+       		       dataType:"JSON",
+       		       crossDomain: true,
+       		       data: JSON.stringify({email : myemail, name : myname, captchaResponse : responsedata}),
+       		       contentType: "application/json",
+       		       cache: false,
+		       async: false,
+   		    success : function(data) {
+	     		$('#expmsg').html("Use access token below");
+	    		$('#html_element').hide();
+	     		$('#tokenfield').show();
+	     		$('#mytoken').val(data.token);
+       		    },
+       		   complete : function(data) {
+       		   },
+       		   error : function(xhr, status, error) {
+	     		$('#monitor').html(error);
+       		   }
+  	});
+}
+
+$( document ).ready(function() {
+	$('#tokenfield').hide();
+	$('#expmsg').hide();
+	$('#html_element').hide();
+});
+
+
+</script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+    </script>
+  </body>
+</html>
