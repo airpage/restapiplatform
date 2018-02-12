@@ -71,7 +71,7 @@ Open API 액세스 토큰 배포를 위한 플랫폼 만들기
 
 :
 186:
-187: 'sitekey' : 'GOOGLE RECAPTCHA SITEKEY]',
+187: 'sitekey' : '[GOOGLE RECAPTCHA SITEKEY]',
 188:
 :
 
